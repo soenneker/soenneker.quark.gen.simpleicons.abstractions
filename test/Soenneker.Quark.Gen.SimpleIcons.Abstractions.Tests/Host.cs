@@ -27,6 +27,11 @@ public sealed class Host : UnitTestHost
         IConfiguration config = TestUtil.BuildConfig();
         services.AddSingleton(config);
 
-        services.AddISimpleIconsSvgProviderAsScoped();
+        services.AddSimpleIconsSvgProviderAsScoped<TestSimpleIconsSvgProvider>();
+    }
+
+    private sealed class TestSimpleIconsSvgProvider : ISimpleIconsSvgProvider
+    {
+        public string? GetSvg(string iconName) => iconName == "Github" ? "<svg />" : null;
     }
 }

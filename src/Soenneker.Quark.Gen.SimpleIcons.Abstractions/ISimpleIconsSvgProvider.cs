@@ -1,11 +1,13 @@
-using Soenneker.Quark.Gen.SimpleIcons.Abstractions.Abstract;
-
 namespace Soenneker.Quark.Gen.SimpleIcons.Abstractions;
 
-/// <inheritdoc cref="IISimpleIconsSvgProvider"/>
-public sealed class ISimpleIconsSvgProvider: IISimpleIconsSvgProvider
+/// <summary>
+/// Provides SVG markup for Simple Icons by name.
+/// Implement and register when using the SimpleIcon element with Soenneker.Quark.Gen.SimpleIcons.
+/// </summary>
+public interface ISimpleIconsSvgProvider
 {
-    public ISimpleIconsSvgProvider()
-    {
-    }
+    /// <summary>
+    /// Returns the SVG markup for the given Simple Icons enum name, or null if not found.
+    /// </summary>
+    string? GetSvg(string iconName);
 }
