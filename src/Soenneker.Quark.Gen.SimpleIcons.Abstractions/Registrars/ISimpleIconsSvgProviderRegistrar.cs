@@ -22,7 +22,7 @@ public static class ISimpleIconsSvgProviderRegistrar
     /// <summary>
     /// Adds <see cref="ISimpleIconsSvgProvider"/> as a scoped service.
     /// </summary>
-    public static IServiceCollection AddSimpleIconsSvgProviderAsScoped<TProvider>(this IServiceCollection services)
+    public static IServiceCollection AddSimpleIconsAsScoped<TProvider>(this IServiceCollection services)
         where TProvider : class, ISimpleIconsSvgProvider
     {
         services.TryAddScoped<ISimpleIconsSvgProvider, TProvider>();

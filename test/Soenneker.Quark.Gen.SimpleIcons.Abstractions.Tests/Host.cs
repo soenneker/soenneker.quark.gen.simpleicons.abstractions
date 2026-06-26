@@ -27,7 +27,7 @@ public sealed class Host : UnitTestHost
         IConfiguration config = TestUtil.BuildConfig();
         services.AddSingleton(config);
 
-        services.AddSimpleIconsSvgProviderAsScoped<TestSimpleIconsSvgProvider>();
+        services.AddSimpleIconsAsScoped<TestSimpleIconsSvgProvider>();
     }
 
     private sealed class TestSimpleIconsSvgProvider : ISimpleIconsSvgProvider
