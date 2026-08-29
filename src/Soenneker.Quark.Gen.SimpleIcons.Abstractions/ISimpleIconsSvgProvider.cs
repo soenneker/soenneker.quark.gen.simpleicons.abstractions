@@ -9,5 +9,7 @@ public interface ISimpleIconsSvgProvider
     /// <summary>
     /// Returns the SVG markup for the given Simple Icons enum name, or null if not found.
     /// </summary>
+    /// <param name="iconName">Name of the icon to target.</param>
+    /// <returns>The requested text.</returns>
     string? GetSvg(string iconName);
 }

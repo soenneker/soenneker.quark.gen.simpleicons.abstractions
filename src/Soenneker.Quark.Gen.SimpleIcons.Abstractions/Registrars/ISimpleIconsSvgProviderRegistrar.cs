@@ -11,6 +11,9 @@ public static class ISimpleIconsSvgProviderRegistrar
     /// <summary>
     /// Adds <see cref="ISimpleIconsSvgProvider"/> as a singleton service.
     /// </summary>
+    /// <typeparam name="TProvider">Type of provider used by the operation.</typeparam>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddSimpleIconsSvgProviderAsSingleton<TProvider>(this IServiceCollection services)
         where TProvider : class, ISimpleIconsSvgProvider
     {
@@ -22,6 +25,9 @@ public static class ISimpleIconsSvgProviderRegistrar
     /// <summary>
     /// Adds <see cref="ISimpleIconsSvgProvider"/> as a scoped service.
     /// </summary>
+    /// <typeparam name="TProvider">Type of provider used by the operation.</typeparam>
+    /// <param name="services">Service collection that receives the registration.</param>
+    /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddSimpleIconsAsScoped<TProvider>(this IServiceCollection services)
         where TProvider : class, ISimpleIconsSvgProvider
     {
