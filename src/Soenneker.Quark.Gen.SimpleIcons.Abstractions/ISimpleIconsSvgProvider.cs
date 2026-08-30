@@ -1,15 +1,14 @@
 namespace Soenneker.Quark.Gen.SimpleIcons.Abstractions;
 
 /// <summary>
-/// Provides SVG markup for Simple Icons by name.
-/// Implement and register when using the SimpleIcon element with Soenneker.Quark.Gen.SimpleIcons.
+/// Provides SVG markup for Simple Icons by their PascalCase member names.
 /// </summary>
 public interface ISimpleIconsSvgProvider
 {
     /// <summary>
-    /// Returns the SVG markup for the given Simple Icons enum name, or null if not found.
+    /// Gets the SVG markup for a Simple Icon.
     /// </summary>
-    /// <param name="iconName">Name of the icon to target.</param>
-    /// <returns>The requested text.</returns>
+    /// <param name="iconName">The PascalCase icon member name, such as <c>Github</c>.</param>
+    /// <returns>The SVG markup, or <see langword="null"/> when the icon is unavailable.</returns>
     string? GetSvg(string iconName);
 }

@@ -1,10 +1,12 @@
 [![](https://img.shields.io/nuget/v/soenneker.quark.gen.simpleicons.abstractions.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.quark.gen.simpleicons.abstractions/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.quark.gen.simpleicons.abstractions/publish-package.yml?style=for-the-badge)](https://github.com/soenneker/soenneker.quark.gen.simpleicons.abstractions/actions/workflows/publish-package.yml)
+[![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.quark.gen.simpleicons.abstractions/build-and-test.yml?label=Build&style=for-the-badge)](https://github.com/soenneker/soenneker.quark.gen.simpleicons.abstractions/actions/workflows/build-and-test.yml)
 [![](https://img.shields.io/nuget/dt/soenneker.quark.gen.simpleicons.abstractions.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.quark.gen.simpleicons.abstractions/)
+[![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.quark.gen.simpleicons.abstractions/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.quark.gen.simpleicons.abstractions/actions/workflows/codeql.yml)
 
 # Soenneker.Quark.Gen.SimpleIcons.Abstractions
 
-Provides SVG markup for Simple Icons by name. Implement and register when using the SimpleIcon element with Soenneker.Quark.Gen.SimpleIcons.
+The SVG-provider contract shared by Quark Simple Icons components and build-time generation.
 
 ## Install
 
@@ -12,26 +14,34 @@ Provides SVG markup for Simple Icons by name. Implement and register when using 
 dotnet add package Soenneker.Quark.Gen.SimpleIcons.Abstractions
 ```
 
-## Quick start
+Most applications should install `Soenneker.Quark.Gen.SimpleIcons`, which references this package and generates an implementation. Reference this package directly when a library needs only the contract or when supplying a custom provider.
+
+## Custom provider
 
 ```csharp
-using Soenneker.Quark.Gen.SimpleIcons.Abstractions.Registrars;
 using Microsoft.Extensions.DependencyInjection;
+using Soenneker.Quark.Gen.SimpleIcons.Abstractions;
+using Soenneker.Quark.Gen.SimpleIcons.Abstractions.Registrars;
 
-var services = new ServiceCollection();
-var result = services.AddSimpleIconsSvgProviderAsSingleton();
+public sealed class CustomSimpleIconsSvgProvider : ISimpleIconsSvgProvider
+{
+    public string? GetSvg(string iconName) => iconName switch
+    {
+        "Github" => "<svg><!-- trusted markup --></svg>",
+        _ => null
+    };
+}
+
+services.AddSimpleIconsAsScoped<CustomSimpleIconsSvgProvider>();
 ```
 
-Adds `ISimpleIconsSvgProvider` as a singleton service.
+Icon names use the PascalCase `SimpleIcon` member name. `GetSvg` returns `null` when the provider does not contain that icon.
 
-## What you get
+## Registration lifetime
 
-- `ISimpleIconsSvgProvider` — Provides SVG markup for Simple Icons by name. Implement and register when using the SimpleIcon element with Soenneker.Quark.Gen.SimpleIcons.
-- `ISimpleIconsSvgProviderRegistrar` — Registration helpers for Simple Icons SVG providers.
+- `AddSimpleIconsAsScoped<TProvider>()` creates one provider per scope and supports providers with scoped dependencies.
+- `AddSimpleIconsSvgProviderAsSingleton<TProvider>()` creates one provider for the application. Use it only when the provider and all of its dependencies are singleton-safe.
 
-## API at a glance
+Both methods use `TryAdd`, so an existing `ISimpleIconsSvgProvider` registration is preserved.
 
-| API | What it does | Result / important behavior |
-| --- | --- | --- |
-| `ISimpleIconsSvgProviderRegistrar.AddSimpleIconsSvgProviderAsSingleton(services)` | Adds `ISimpleIconsSvgProvider` as a singleton service. | The same service collection, so additional registrations can be chained. |
-| `ISimpleIconsSvgProviderRegistrar.AddSimpleIconsAsScoped(services)` | Adds `ISimpleIconsSvgProvider` as a scoped service. | The same service collection, so additional registrations can be chained. |
+The returned string is SVG markup and may be rendered as raw markup by the consuming component. Custom providers should return only trusted or sanitized SVG content.
