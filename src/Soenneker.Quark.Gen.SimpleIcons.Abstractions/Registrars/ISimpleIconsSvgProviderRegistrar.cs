@@ -1,3 +1,6 @@
+#if NET5_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -14,7 +17,11 @@ public static class ISimpleIconsSvgProviderRegistrar
     /// <typeparam name="TProvider">Type of provider used by the operation.</typeparam>
     /// <param name="services">Service collection that receives the registration.</param>
     /// <returns>The same service collection, so additional registrations can be chained.</returns>
-    public static IServiceCollection AddSimpleIconsSvgProviderAsSingleton<TProvider>(this IServiceCollection services)
+    public static IServiceCollection AddSimpleIconsSvgProviderAsSingleton<
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        TProvider>(this IServiceCollection services)
         where TProvider : class, ISimpleIconsSvgProvider
     {
         services.TryAddSingleton<ISimpleIconsSvgProvider, TProvider>();
@@ -28,7 +35,11 @@ public static class ISimpleIconsSvgProviderRegistrar
     /// <typeparam name="TProvider">Type of provider used by the operation.</typeparam>
     /// <param name="services">Service collection that receives the registration.</param>
     /// <returns>The same service collection, so additional registrations can be chained.</returns>
-    public static IServiceCollection AddSimpleIconsAsScoped<TProvider>(this IServiceCollection services)
+    public static IServiceCollection AddSimpleIconsAsScoped<
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        TProvider>(this IServiceCollection services)
         where TProvider : class, ISimpleIconsSvgProvider
     {
         services.TryAddScoped<ISimpleIconsSvgProvider, TProvider>();
