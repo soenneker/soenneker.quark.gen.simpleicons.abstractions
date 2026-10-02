@@ -30,8 +30,4 @@ public sealed class Host : UnitTestHost
         services.AddSimpleIconsAsScoped<TestSimpleIconsSvgProvider>();
     }
 
-    private sealed class TestSimpleIconsSvgProvider : ISimpleIconsSvgProvider
-    {
-        public string? GetSvg(string iconName) => iconName == "Github" ? "<svg />" : null;
-    }
 }
